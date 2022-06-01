@@ -48,30 +48,49 @@ class CamposController extends Controller
         $campoDto->esCompuesto = $req->es_compuesto;
 
         $casoUso = new CrearCampoUseCase(new EloquentCampo());
-        $exito = $casoUso->ejecutar($campoDto);
-        if ($exito) {
-            return response()->json([
-                'code' => 200,
-                'message' => 'success'
-            ]);
-        } else {
-            return response()->json([
-                'code' => 200,
-                'message' => 'Error'
-            ]);
-        }
+        $responseJson = $casoUso->ejecutar($campoDto);
+        return response()->json([
+            'code' => $responseJson->codigo,
+            'type' => $responseJson->tipo,
+            'message' => $responseJson->detalle,
+        ]);
     }
 
     public function show($campoId) {
-        $casoUso = new BuscarCampoPorIdUseCase(new EloquentCampo());
-        $campo = $casoUso->ejecutar($campoId);
-        if (!$campo->existe()) {
+
+        if (!is_numeric($campoId)) {
             return response()->json([
-                'code' => 200,
-                'message' => 'El campo no existe'
+                "errors" => array(
+                    [
+                        "status" => "422", 
+                        "title" => "parámetro no válido",
+                        "detail" => "id no es numérico",
+                    ],
+                ),    
             ]);
         }
-        return response()->json(new CampoFormatoJson($campo));
+
+        $casoUso = new BuscarCampoPorIdUseCase(new EloquentCampo());
+        $responseJson = $casoUso->ejecutar($campoId);
+        if ($responseJson->tipo == "error") {
+            return response()->json([
+                "errors" => array(
+                    [
+                        "status" => $responseJson->codigo, 
+                        "title" => "resultado consulta",
+                        "detail" => $responseJson->detalle,
+                    ],
+                ),    
+            ]);                     
+        }
+
+        return response()->json([
+            "data" => array(
+                "type" => "campos",
+                "id" => "". $responseJson->data->getId() . "",
+                "attributes" => new CampoFormatoJson($responseJson->data)
+            ),
+        ]);
     }
 
     public function edit($id) {
