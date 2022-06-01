@@ -36,7 +36,7 @@ class Campo extends Model implements CampoRepository {
                 $exito = $this->agregarSubcampo($campo, $subcampo);
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $e->getMessage();
             $exito = false;
         }
         return $exito;
@@ -68,7 +68,7 @@ class Campo extends Model implements CampoRepository {
             }
 
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $e->getMessage();
         }
         return $campos;
     }
@@ -81,7 +81,7 @@ class Campo extends Model implements CampoRepository {
                 $eloquentCampo->delete();
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $e->getMessage();
             $exito = false;
         }
         return $exito;
@@ -98,7 +98,7 @@ class Campo extends Model implements CampoRepository {
                 $eloquentCampo->save();
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $e->getMessage();
             $exito = false;
         }
         return $exito;
@@ -126,7 +126,7 @@ class Campo extends Model implements CampoRepository {
                 $campo->setAbreviatura($eloquentCampo->abreviatura);
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $e->getMessage();
         }
         return $campo;
     }
@@ -142,7 +142,7 @@ class Campo extends Model implements CampoRepository {
                 }
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $e->getMessage();
             $exito = false;
         }
         return $exito;
@@ -159,7 +159,7 @@ class Campo extends Model implements CampoRepository {
                 }
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $e->getMessage();
             $exito = false;
         }
         return $exito;
@@ -194,7 +194,7 @@ class Campo extends Model implements CampoRepository {
                 array_push($subcampos, $subcampo);
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            $e->getMessage();
         }
         return $subcampos;
     }

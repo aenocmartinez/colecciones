@@ -7,6 +7,7 @@ class MensajeJson {
     public string $codigo;
     public string $tipo;
     public string $detalle;
+    public string $data;
     public function __construct(string $codigo, string $tipo, string $detalle){
         $this->codigo = $codigo;
         $this->tipo = $tipo;
