@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 
 class ColeccionController extends Controller
 {
-    public function index()
-    {
+    public function __construct() {
+        $this->middleware('auth:api');
+    }    
+
+    public function index() {
         $colecciones = array(
             array("id" => 1, "nombre" => 'Arte'),
             array("id" => 2, "nombre" => 'Historia'),
@@ -21,35 +24,29 @@ class ColeccionController extends Controller
         ]);
     }
 
-    public function create()
-    {
+    public function create() {
         //
     }
 
-    public function store(Request $req)
-    {
+    public function store(Request $req) {
         return response()->json([
             "Nueva colección" => $req->nombre
         ]);
     }
 
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 }
