@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Src\Museologo\usecase\campos;
 
+use Src\Compartido\MensajeJson;
+use Src\Compartido\messsage\Error;
+use Src\Compartido\messsage\JSONMessage;
 use Src\Museologo\domain\entity\Campo;
 use Src\Museologo\domain\repositories\CampoRepository;
 
@@ -12,22 +15,28 @@ class AgregarSubcampoUseCase {
         $this->repository = $repository;
     }
 
-    public function ejecutar(int $campoId, int $subcampoId, int $orden=1): bool {
+    public function ejecutar(int $campoId, int $subcampoId, int $orden=1): MensajeJson {
+        $mensajeJson = new MensajeJson("200", "success", "Se ha asigando el subcampo exitosamente.");
+
         $campo = Campo::buscarPorId($this->repository, $campoId);
         if (!$campo->existe()) {
-            return false;
+            return new MensajeJson("200", "error", "El campo principal no existe.");
         }
 
         $subcampo = Campo::buscarPorId($this->repository, $subcampoId);
         if (!$subcampo->existe()) {
-            return false;
+            return new MensajeJson("200", "error", "El subcampo no existe.");
         }
 
         if (!$campo->esCompuesto()) {
-            return false;
+            return new MensajeJson("200", "error", "El campo principal no es compuesto.");
         }
 
         $campo->setRepository($this->repository);
-        return $campo->agregarSubcampo($subcampo, $orden);
+        $exito = $campo->agregarSubcampo($subcampo, $orden);
+        if (!$exito) {
+            $mensajeJson = new MensajeJson("200", "error", "Ha ocurrido un error en el sistema.");
+        }
+        return $mensajeJson;
     }
 }

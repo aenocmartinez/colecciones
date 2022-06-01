@@ -128,18 +128,12 @@ class CamposController extends Controller
 
     public function agregarSubcampo(AgregarSubcampoRequest $req) {
         $casoUso = new AgregarSubcampoUseCase(new EloquentCampo());
-        $exito = $casoUso->ejecutar($req->campo_id, $req->subcampo_id, $req->orden);
-        if ($exito) {
-            return response()->json([
-                'code' => 200,
-                'message' => 'success'
-            ]);
-        } else {
-            return response()->json([
-                'code' => 200,
-                'message' => 'el campo no existe'
-            ]);
-        }
+        $responseJson = $casoUso->ejecutar($req->campo_id, $req->subcampo_id, $req->orden);
+        return response()->json([
+            'code' => $responseJson->codigo,
+            'type' => $responseJson->tipo,
+            'message' => $responseJson->detalle,
+        ]);
     }
 
     public function quitarSubcampo(AgregarSubcampoRequest $req) {
