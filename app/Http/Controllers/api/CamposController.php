@@ -20,6 +20,11 @@ use Src\Museologo\usecase\campos\QuitarSubcampoUseCase;
 
 class CamposController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+        
     public function index() {
         $casoUso = new ListarCamposUseCase(new EloquentCampo());
         $campos = $casoUso->ejecutar();
